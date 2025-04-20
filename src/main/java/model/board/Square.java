@@ -6,7 +6,7 @@ import model.pieces.Piece;
  * Represents a single square on the chessboard.
  */
 public class Square {
-    private Position position;
+    private final Position position;
     private Piece piece; // Can be null if the square is empty
 
     // Constructor needed (e.g., Square(Position position))

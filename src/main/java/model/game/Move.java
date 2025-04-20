@@ -95,13 +95,6 @@ public class Move {
         return pieceCaptured != null;
     }
 
-    // --- Removed Setters to promote immutability ---
-    // public void setPieceCaptured(Piece piece) { pieceCaptured = piece; }
-    // public void setCastling(boolean castling) { isCastling = castling; }
-    // public void setEnPassant(boolean enPassant) { isEnPassant = enPassant; }
-
-    // --- Standard Object Methods ---
-
     @Override
     public String toString() {
         // Basic algebraic notation style (can be enhanced)
@@ -131,8 +124,6 @@ public class Move {
             if (isPromotion()) {
                 sb.append("=").append(getPieceChar(promotionPieceType));
             }
-
-            // TODO: Add check (+) or checkmate (#) indication (requires game state context)
         }
         return sb.toString();
     }

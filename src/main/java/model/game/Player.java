@@ -7,8 +7,6 @@ import model.enums.ChessColor;
  */
 public class Player {
     private final ChessColor chessColor;
-    // Optional: Track captured pieces
-    // private List<Piece> capturedPieces;
 
     public Player(ChessColor chessColor) {
         this.chessColor = chessColor;
@@ -17,8 +15,4 @@ public class Player {
     public ChessColor getColor() {
         return chessColor;
     }
-
-    // Optional methods if tracking captures
-    // public void addCapturedPiece(Piece piece) { ... }
-    // public List<Piece> getCapturedPieces() { ... }
 }

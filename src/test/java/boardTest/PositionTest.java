@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import model.board.Position;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 
 class PositionTest {
@@ -54,7 +53,7 @@ class PositionTest {
         Position position1 = new Position(1, 1);
         // Use assertNotEquals with explicit null check for clarity if needed,
         // but assertEquals(false, position1.equals(null)) is also valid.
-        assertFalse(position1.equals(null), "An object should not be equal to null.");
+        assertNotEquals(null, position1, "An object should not be equal to null.");
     }
 
     @Test
@@ -62,7 +61,7 @@ class PositionTest {
         Position position1 = new Position(2, 3);
         String otherObject = "Not a Position";
         // Use assertNotEquals with explicit check for clarity
-        assertFalse(position1.equals(otherObject), "An object should not be equal to an object of a different class.");
+        assertNotEquals(otherObject, position1, "An object should not be equal to an object of a different class.");
     }
 
     @Test

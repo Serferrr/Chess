@@ -38,14 +38,4 @@ public class Knight extends Piece {
         return validMoves;
     }
 
-    public void LongCastle(Board board)
-    {
-
-    }
-
-    public void ShortCastle(Board board)
-    {
-
-    }
-
 }

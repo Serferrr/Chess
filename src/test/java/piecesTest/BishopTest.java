@@ -15,7 +15,6 @@ class BishopTest {
 
     private Board board;
     private Bishop whiteBishop;
-    private Bishop blackBishop;
 
     @BeforeEach
     void setUp() {
@@ -137,7 +136,7 @@ class BishopTest {
     @Test
     void testGetValidMoves_MixedBlockingAndCapturing() {
         // Place black bishop at e5 (4,4)
-        blackBishop = new Bishop(ChessColor.BLACK, board.getSquareAt(new Position(4, 4)));
+        Bishop blackBishop = new Bishop(ChessColor.BLACK, board.getSquareAt(new Position(4, 4)));
         board.getSquareAt(new Position(4, 4)).setPiece(blackBishop);
 
         // Friendly piece (Black Pawn)

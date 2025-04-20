@@ -2,12 +2,10 @@ package com.example.chessmaven;
 
 import javafx.collections.FXCollections; // Import necessary classes
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn; // Import TableColumn
 import javafx.scene.control.TableView;   // Import TableView
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color; // Alias to avoid confusion with model.enums.Color
@@ -17,7 +15,6 @@ import model.board.Board;
 import model.board.Position;
 import model.board.Square;
 import model.enums.ChessColor; // Your model's Color enum
-import model.enums.GameState; // Import GameState
 import model.enums.PieceType;
 import model.game.Move;
 import model.game.ChessGame;
@@ -51,10 +48,12 @@ public class ChessController {
     private static final String LIGHT_COLOR = "#f0d9b5"; // Example light square color
     private static final String DARK_COLOR = "#b58863";  // Example dark square color
 
-    // Observable list to back the TableView
+    // Observable list to back the TableView for move history
     private final ObservableList<MoveHistoryEntry> moveHistoryData = FXCollections.observableArrayList();
 
-    // Method to receive the ChessGame instance from the Application
+    /**
+     * Method to receive the ChessGame instance from the Application.
+     */
     public void setGame(ChessGame game) {
         this.game = game;
         this.board = game.getBoard(); // Get the board from the game
@@ -72,7 +71,9 @@ public class ChessController {
         updateMoveHistoryDisplay(); // Initial population (empty)
     }
 
-    // Setup TableView columns
+    /**
+     * Setup TableView columns for move history.
+     */
     private void setupMoveHistoryTable() {
         moveNumberCol.setCellValueFactory(cellData -> cellData.getValue().moveNumberProperty());
         whiteMoveCol.setCellValueFactory(cellData -> cellData.getValue().whiteMoveProperty());
@@ -82,6 +83,9 @@ public class ChessController {
         moveHistoryTable.setItems(moveHistoryData);
     }
 
+    /**
+     * Draws the chess board on the GridPane.
+     */
     private void drawBoard() {
         boardPane.getChildren().clear(); // Clear previous state if any
 
@@ -105,7 +109,12 @@ public class ChessController {
         }
     }
 
-    // Creates the visual representation of a square (background color)
+    /**
+     * Creates the visual representation of a square (background color).
+     * @param guiRow The row of the square in the GUI.
+     * @param guiCol The column of the square in the GUI.
+     * @return The StackPane representing the square.
+     */
     private StackPane createSquarePane(int guiRow, int guiCol) {
         StackPane pane = new StackPane();
         pane.setPrefSize(SQUARE_SIZE, SQUARE_SIZE);
@@ -122,7 +131,12 @@ public class ChessController {
         return pane;
     }
 
-    // Creates the visual representation of a piece (using Unicode)
+    /**
+     * Creates the visual representation of a piece (using Unicode).
+     * @param piece The piece to represent.
+     * @return The Text object representing the piece.
+     */
+
     private Text createPieceText(Piece piece) {
         Text pieceText = new Text(getUnicodePiece(piece));
         pieceText.setFill(piece.getColor() == ChessColor.WHITE ? Color.WHITE : Color.BLACK);
@@ -132,21 +146,30 @@ public class ChessController {
         return pieceText;
     }
 
-    // Maps PieceType and Color to Unicode characters
+    /**
+     * Maps PieceType and Color to Unicode characters.
+     * @param piece The piece to get the Unicode representation for.
+     * @return The Unicode character representing the piece.
+     */
     private String getUnicodePiece(Piece piece) {
         if (piece == null) return "";
         return switch (piece.getType()) {
-            case KING -> piece.getColor() == ChessColor.WHITE ? "\u2654" : "\u265A"; // ♔♚
-            case QUEEN -> piece.getColor() == ChessColor.WHITE ? "\u2655" : "\u265B"; // ♕♛
-            case ROOK -> piece.getColor() == ChessColor.WHITE ? "\u2656" : "\u265C"; // ♖♜
-            case BISHOP -> piece.getColor() == ChessColor.WHITE ? "\u2657" : "\u265D"; // ♗♝
-            case KNIGHT -> piece.getColor() == ChessColor.WHITE ? "\u2658" : "\u265E"; // ♘♞
-            case PAWN -> piece.getColor() == ChessColor.WHITE ? "\u2659" : "\u265F"; // ♙♟
+            case KING -> piece.getColor() == ChessColor.WHITE ? "♔" : "♚"; // ♔♚
+            case QUEEN -> piece.getColor() == ChessColor.WHITE ? "♕" : "♛"; // ♕♛
+            case ROOK -> piece.getColor() == ChessColor.WHITE ? "♖" : "♜"; // ♖♜
+            case BISHOP -> piece.getColor() == ChessColor.WHITE ? "♗" : "♝"; // ♗♝
+            case KNIGHT -> piece.getColor() == ChessColor.WHITE ? "♘" : "♞"; // ♘♞
+            case PAWN -> piece.getColor() == ChessColor.WHITE ? "♙" : "♟"; // ♙♟
         };
     }
 
-    // --- Basic Click Handling Logic ---
+    /**
+     * The currently selected square.
+     */
     private Square selectedSquare = null;
+    /**
+     * Handles a click on a square.
+     */
 
     private void handleSquareClick(int guiRow, int guiCol) {
         Position clickedBoardPos = new Position(7 - guiRow, guiCol); // Convert to board coordinates
@@ -166,7 +189,6 @@ public class ChessController {
             }
         } else {
             // Second click: Attempt to move
-            Piece pieceToMove = selectedSquare.getPiece();
             Move potentialMove = createPotentialMove(selectedSquare, clickedSquare); // Create the move object
 
             if (potentialMove != null) {
@@ -191,7 +213,13 @@ public class ChessController {
         }
     }
 
-    // Helper to create a Move object (needs promotion handling later)
+    /**
+     * Helper to create a Move object.
+     * @param start The starting square.
+     * @param end The ending square.
+     * @return The Move object, or null if the move is invalid.
+     */
+
     private Move createPotentialMove(Square start, Square end) {
         Piece piece = start.getPiece();
         if (piece == null) return null;
@@ -213,7 +241,12 @@ public class ChessController {
     }
 
 
-    // Basic highlighting (can be improved)
+    /**
+     * Basic highlighting of a square.
+     * @param square The square to highlight.
+     * @param highlight True to highlight, false to unhighlight.
+     */
+
     private void highlightSquare(Square square, boolean highlight) {
         if (square == null) return;
         int guiRow = 7 - square.getPosition().getRow();
@@ -232,6 +265,9 @@ public class ChessController {
                 });
     }
 
+    /**
+     * Updates the status label based on the game state.
+     */
     private void updateStatusLabel() {
         String statusText = switch (game.getGameState()) {
             case ONGOING -> game.getCurrentPlayer().getColor() + "'s Turn";
@@ -245,7 +281,9 @@ public class ChessController {
         statusLabel.setText(statusText);
     }
 
-    // Update the TableView based on the game's move history
+    /**
+     * Updates the TableView based on the game's move history.
+     */
     private void updateMoveHistoryDisplay() {
         moveHistoryData.clear(); // Clear existing data
         List<Move> history = game.getMoveHistory();
@@ -260,12 +298,7 @@ public class ChessController {
                 currentEntry = new MoveHistoryEntry(moveNumber, moveString, ""); // Create new row for White's move
                 moveHistoryData.add(currentEntry);
             } else { // Black's move (index 1, 3, 5...)
-                if (currentEntry != null) {
-                    currentEntry.setBlackMove(moveString); // Update the existing row with Black's move
-                } else {
-                    // Should not happen in a normal game sequence, but handle defensively
-                    System.err.println("Error updating move history: Black move without preceding White move.");
-                }
+                currentEntry.setBlackMove(moveString); // Update the existing row with Black's move
             }
         }
         // Scroll to the last move

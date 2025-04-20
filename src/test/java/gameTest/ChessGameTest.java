@@ -328,13 +328,13 @@ class ChessGameTest {
     @DisplayName("Validate Move - Incomplete Move Object")
     void testValidateMoveIncomplete() {
         assertThrows(NullPointerException.class,
-                () -> {new Move(null, null, null, null);},
+                () -> new Move(null, null, null, null),
                 "Incomplete move object should throw NullPointerException.");
     }
 
     @Test
     @DisplayName("Generate All Legal Moves - Starting Position")
-    void testGenerateAllLegalMovesStart() {
+     void testGenerateAllLegalMovesStart() {
         List<Move> whiteMoves = game.generateAllLegalMoves(whitePlayer);
         // 8 pawns * 2 moves each = 16
         // 2 knights * 2 moves each = 4

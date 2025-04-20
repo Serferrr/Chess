@@ -31,15 +31,13 @@ public abstract class Piece {
     public ChessColor getColor()
     {
         return chessColor;
-    };
+    }
 
     public PieceType getType() {
-        // Implementation needed
         return type;
     }
 
     public Square getCurrentSquare() {
-        // Implementation needed
         return currentSquare;
     }
 
